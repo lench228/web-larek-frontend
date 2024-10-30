@@ -1,5 +1,5 @@
 import { iCartProduct } from '../../types/data/data';
-import { iCartModel } from '../../types/models/cart-model';
+import { iCartModel } from '../../types/models/i-cart-model';
 
 export class CartModel implements iCartModel {
 	_products: iCartProduct[];

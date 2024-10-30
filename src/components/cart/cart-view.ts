@@ -7,6 +7,8 @@ export class CartView<T> extends Modal implements iComponent<T> {
 	private readonly _model: T;
 	private readonly _template: HTMLElement;
 	private readonly _element: HTMLElement;
+	private _trashButton: HTMLElement;
+	private _orderButton: HTMLElement;
 
 	constructor(
 		container: HTMLElement,

@@ -6,6 +6,9 @@ export class FormView<T> extends Modal implements iComponent<T> {
 	private readonly _model: T;
 	private readonly _template: HTMLElement;
 	private readonly _element: HTMLElement;
+	private formElements: HTMLElement[];
+	private submitButton: HTMLElement;
+	private nextButton: HTMLElement;
 
 	constructor(
 		container: HTMLElement,
@@ -34,6 +37,15 @@ export class FormView<T> extends Modal implements iComponent<T> {
 	}
 
 	render(data?: object): HTMLElement {
+		throw new Error('Method not implemented.');
+	}
+	private handleFormElementInput(e: InputEvent) {
+		throw new Error('Method not implemented.');
+	}
+	private handleNextButtonClick(): HTMLElement {
+		throw new Error('Method not implemented.');
+	}
+	private handleFormSubmit(e: SubmitEvent): Promise<object> {
 		throw new Error('Method not implemented.');
 	}
 }

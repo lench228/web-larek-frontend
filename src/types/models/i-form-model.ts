@@ -1,6 +1,6 @@
 import { iOrderData } from '../data/data';
 
-export interface formModel {
+export interface IFormModel {
 	orderData: iOrderData;
 	error: string;
 

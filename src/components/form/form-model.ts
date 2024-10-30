@@ -1,13 +1,13 @@
 import { iProduct, iOrderData } from '../../types/data/data';
-import { productsModel } from '../../types/models/products-model';
-import { formModel } from '../../types/models/form-model';
+import { IProductsModel } from '../../types/models/i-products-model';
+import { IFormModel } from '../../types/models/i-form-model';
 
-export class FormModel implements formModel {
-	private _formFields: iOrderData;
+export class FormModel implements IFormModel {
+	private _orderData: iOrderData;
 	private _error: string;
 
-	get formFields(): iOrderData {
-		return this._formFields;
+	get orderData(): iOrderData {
+		return this._orderData;
 	}
 
 	get error(): string {

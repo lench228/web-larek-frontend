@@ -1,7 +1,7 @@
 import { iProduct } from '../../types/data/data';
-import { productsModel } from '../../types/models/products-model';
+import { IProductsModel } from '../../types/models/i-products-model';
 
-export class ProductsModel implements productsModel {
+export class ProductsModel implements IProductsModel {
 	private readonly _products: iProduct[];
 
 	constructor(products: iProduct[]) {
