@@ -11,7 +11,6 @@
 - src/types/ - папка с типами 
 - src/types/base - базовые типы 
 - src/types/models - интерфейсы моделей компонентов 
-- 
 Важные файлы:
 - src/pages/index.html — HTML-файл главной страницы
 - src/types/data/data.ts — файл с типами объектов
@@ -46,8 +45,8 @@ npm run build
 yarn build
 ```
 # Базовые интерфейсы и классы 
-## iComponent<T>
-Описывает слой View в архитектуре, отвечает за отрисовку компонентов <br>
+## `iComponent<T>`
+Описывает слой View в архитектуре, отвечает за отрисовку компонентов 
 Свойства: 
 - container: HTMLElement -- Родитель в котором нужно отрисовывать
 - model: T: -- Ссылка на экземпляр модели компонента
@@ -55,106 +54,145 @@ yarn build
 - element: HTMLElement -- Сам элемент
 Методы:
 - render(data?: object): HTMLElement -- Метод для отрисовки\перерисовки компонента
-
 ## abstract Modal
 Абстрактный класс, который реализует логику работы для модальных окон, добавляя его к iComponent получаем модальный компонент<br>
 Свойства: 
-- private isOpen: boolean; -- Для лучшего контроля состояния открытия\закрытия модалки
-- private closeButton: HTMLElement -- Кнопка закрытия конкретной модалки
-- private triggerElement: HTMLElement -- На этот элемент вешается событие открытия модалки
+- `private isOpen: boolean;` -- Для лучшего контроля состояния открытия\закрытия модалки
+- `private closeButton: HTMLElement` -- Кнопка закрытия конкретной модалки
+- `private triggerElement: HTMLElement` -- На этот элемент вешается событие открытия модалки
 Методы: 
-- private initializeEventListeners = (): void -- Инициатор хэндлеров событий 
-- protected handleEscClick = (event: KeyboardEvent): void -- Событие при нажатии на Esc
-- protected handleCloseButtonClick = (): void -- Событие при нажатии на кнопку закрытия 
-- protected handleBodyClick = (event: MouseEvent): void -- События при нажатии вне формы
-- protected openModal = (): void -- Открытие модалки 
-- protected closeModal = (): void -- Закрытие модалки
-- 
+
+- `private initializeEventListeners = (): void` -- Инициатор хэндлеров событий 
+- `protected handleEscClick = (event: KeyboardEvent): void` -- Событие при нажатии на Esc
+- `protected handleCloseButtonClick = (): void` -- Событие при нажатии на кнопку закрытия 
+- `protected handleBodyClick = (event: MouseEvent): void` -- События при нажатии вне формы
+- `protected openModal = (): void` -- Открытие модалки 
+- `protected closeModal = (): void` -- Закрытие модалки
+
+
+---
+
 ## Api 
 Класс для работы с API
 Свойства:
-- readonly baseUrl: string -- Ссылка на начало пути к api, до роутинга
-- protected options: RequestInit -- Настройки запроса, конкретно заголовки
+
+- `readonly baseUrl: string` -- Ссылка на начало пути к api, до роутинга
+- `protected options: RequestInit` -- Настройки запроса, конкретно заголовки
 Методы:
-- protected handleResponse(response: Response): Promise<object> -- Принимает и проверяет запрос, возвращает промис с данными или ошибкой  
-- get(url: string) --  Принимает ссылку для 'GET' запроса, и возвращает результат, обработанный методом handleResponse
-- post(url: string, data: object, method: ApiPostMethods = 'POST') -- принимает ссылку для 'POST' запроса, и возвращает результат, обработанный методом handleResponse
+- `protected handleResponse(response: Response): Promise<object>` -- Принимает и проверяет запрос, возвращает промис с данными или ошибкой  
+- `get(url: string)` --  Принимает ссылку для 'GET' запроса, и возвращает результат, обработанный методом handleResponse
+- `post(url: string, data: object, method: ApiPostMethods = 'POST')` -- принимает ссылку для 'POST' запроса, и возвращает результат, обработанный методом handleResponse
+
+
+---
 
 ## EventEmitter
 Брокер событий
 Свойства: 
-- private _events: Map<EventName, Set<Subscriber>> -- Хранит имя события и подписчика на событие 
+- `private _events: Map<EventName, Set<Subscriber>>` -- Хранит имя события и подписчика на событие 
 Методы: 
-- on<T extends object>(eventName: EventName, callback: (event: T) => void) -- Установить обработчик на событие
-- off(eventName: EventName, callback: Subscriber)  -- Снять обработчик с события
-- emit<T extends object>(eventName: string, data?: T) -- Инициировать событие с данными
-- onAll(callback: (event: EmitterEvent) => void)) -- Слушать все события
-- offAll() -- Сбросить все обработчики 
-- trigger<T extends object>(eventName: string, context?: Partial<T>)  -- Сделать коллбек триггер, генерирующий событие при вызове
+
+- `on<T extends object>(eventName: EventName, callback: (event: T) => void) `-- Установить обработчик на событие
+- `off(eventName: EventName, callback: Subscriber)`  -- Снять обработчик с события
+- `emit<T extends object>(eventName: string, data?: T) `-- Инициировать событие с данными
+- `onAll(callback: (event: EmitterEvent) => void))` -- Слушать все события
+- `offAll()` -- Сбросить все обработчики 
+- `trigger<T extends object>(eventName: string, context?: Partial<T>) ` -- Сделать коллбек триггер, генерирующий событие при вызове
+
+---
 
 # Интерфейсы
 ## Интерфейсы данных
 ### iOrderData
 Описывает отправляемый на сервер объект при совершении заказа <br>
 Свойства: 
+```
 - payment: string -- Тип оплаты
 - mail: string -- Почта
 - phone: string -- Номер телефона
 - address: string -- Адрес 
 - total: number -- Сумма заказа
 - items: string[] -- Айди заказанных товаров
+```
+
+---
+
 ### iProduct
 Описывает объект товара <br>
 Свойства: 
+```
 - id: string -- Айди товара
 - description: string -- Описание
 - image: string -- Ссылка на изображение
 - title: string -- Название 
 - category: string -- Категория
 - price: number | undefined -- Цена, цены может и не быть
+```
+
+---
+
 ### iCartProduct
 Описывает объект товара, но только с полями нужными ему в рамках корзины пользователя <br>
 Свойства: 
+```
 - id: string -- Айди товара
 - title: string -- Название 
 - price: number -- Цена, Уже не может быть неопределенной(в корзину нельзя добавить товар без цены)
+```
+
+---
 
 ## Интерфейсы моделей компонентов 
 Все модели наследуют следующие соответствующие интерфейсы и реализуют их методы 
+
+---
+
 ### iProductsModel
-Интерфейс для модели товаров на главной странице 
+Интерфейс для модели товаров на главной странице <br>
 Свойства: 
-- products: iProduct[] -- Массив товаров
+-`products: iProduct[] -- Массив товаров` <br>
 Методы: 
-- Items(url: string): Promise<object> -- Для получения с api товаров 
+-` Items(url: string): Promise<object> -- Для получения с api товаров`
+
+---
 
 ### iCardModel 
-Интерфейс для модели модального компонента товара 
+Интерфейс для модели модального компонента товара <br>
 Свойства:
-- product: iProduct; -- Массив товаров
+- `product: iProduct; -- Массив товаров`<br>
 Методы:
-- getCard(url: string): Promise<object> -- Получить актуальную карточку товара по url
-- buyProduct(): void --  Добавить в корзину товар
-- deleteProduct(): void -- Убрать товар из корзины
+- `getCard(url: string): Promise<object> -- Получить актуальную карточку товара по url`
+- `buyProduct(): void --  Добавить в корзину товар`
+- `deleteProduct(): void -- Убрать товар из корзины`
+
+
+---
 
 ### iCartModel 
-Интерфейс для модели модального компонента корзины
+Интерфейс для модели модального компонента корзины<br>
 Свойства:
+```
 - products: iCartProduct[] -- Товары в корзине
 - total: number -- Сумма заказа
+```
+ <br>
 Методы:
-- add(id: string): void -- Добавить в корзину товар
-- remove(id: string): void; --  Убрать товар из корзины
+- `add(id: string): void` -- Добавить в корзину товар
+- `remove(id: string): void;` --  Убрать товар из корзины
+
+---
 
 ### iFormModel
-Интерфейс для модели модального компонента формы
+Интерфейс для модели модального компонента формы<br>
 Свойства: 
-- orderData: iOrderData -- Данные заказа 
-- error: string - Ошибка валидации 
+- `orderData: iOrderData` -- Данные заказа 
+- `error: string` - Ошибка валидации <br>
 Методы:
-- input(value: string): void -- Изменение полей
-- validate(value: string): string | undefined -- Валидация 
-- postOrder(formFields: iOrderData): Promise<object> -- Оформление заказа 
+- `input(value: string): void `-- Изменение полей
+- `validate(value: string): string | undefined` -- Валидация 
+- `postOrder(formFields: iOrderData): Promise<object>` -- Оформление заказа
+
+---
 
 # View Слой 
 Все классы View слоя имплементируют интерфейс iComponent, с дженерик параметром типа модели компонента, и, если они модальные, то также являются наследниками класса Modal 
@@ -210,52 +248,67 @@ export class FormView<T> extends Modal implements iComponent<T> {
 }
 ```
 Также у компонентов есть свои свойства и методы
+
 ## FormView 
-Для форм 
+Для форм <br>
 Свойства:
-- private formElements: HTMLElement[] -- Инпуты формы 
-- private submitButton: HTMLElement -- Кнопка совершения заказа 
-- private nextButton: HTMLElement -- Кнопка перехода к следующей форме
+- `private formElements: HTMLElement[]` -- Инпуты формы 
+- `private submitButton: HTMLElement` -- Кнопка совершения заказа 
+- `private nextButton: HTMLElement `-- Кнопка перехода к следующей форме<br>
 Методы: 
-- private handleFormElementInput(e: InputEvent)  -- На вводе в поля формы
-- private handleNextButtonClick(): HTMLElement -- На переключении формы 
-- private handleFormSubmit(e: SubmitEvent): Promise<object>  -- Отправка формы 
+- `private handleFormElementInput(e: InputEvent)`  -- На вводе в поля формы
+- `private handleNextButtonClick(): HTMLElement` -- На переключении формы 
+- `private handleFormSubmit(e: SubmitEvent): Promise<object>`  -- Отправка формы
+
+---
 
 ## CartView
-Для корзины
+Для корзины<br>
 Свойства:
-- private _trashButton: HTMLElement; -- Кнопка удаления товара из корзины
-- private _orderButton: HTMLElement; -- Кнопка оформления заказа
+- `private _trashButton: HTMLElement;` -- Кнопка удаления товара из корзины
+- `private _orderButton: HTMLElement;` -- Кнопка оформления заказа<br>
 Методы:
-- private handleTrashButtonClick(): HTMLElement -- На нажатии кнопки удаления 
-- private handleOrderButtonClick(data: iOrderData): void  -- На нажатии кнопки заказа
+- `private handleTrashButtonClick(): HTMLElement` -- На нажатии кнопки удаления 
+- `private handleOrderButtonClick(data: iOrderData): void`  -- На нажатии кнопки заказа
+
+---
 
 ## CartView
-Для корзины
+Для корзины<br>
 Свойства:
-- private _buyButton: HTMLElement; -- Кнопка добавления в корзину 
-- private _deleteButton: HTMLElement; -- Кнопка удаления товара, если товар уже добавлен 
+- `private _buyButton: HTMLElement;` -- Кнопка добавления в корзину 
+- `private _deleteButton: HTMLElement;` -- Кнопка удаления товара, если товар уже добавлен <br>
 Методы:
-- private handleBuyButtonClick(event: MouseEvent): void -- На добавлении в корзину 
-- private handelDeleteButtonClick(event: MouseEvent): void  -- На удалении из корзины 
+- `private handleBuyButtonClick(event: MouseEvent): void` -- На добавлении в корзину 
+- `private handelDeleteButtonClick(event: MouseEvent): void`  -- На удалении из корзины
+
+---
 
 ## CardView 
 Для модалки карточки товара, не содержит особых свойств и методов 
 
+---
+
 ## OrderSuccessView
 Появляется после успешного заказа.
 Имеет одно свойство, сумма заказа, полученная с сервера после оформления
-- total: number
+- `total: number`
 
-
+---
 
 # Page 
-Входная точка приложения, компонует все компоненты и с помощью EventEmitter навешивает события на элементы
+Входная точка приложения, компонует все компоненты и с помощью EventEmitter навешивает события на элементы<br>
 Свойства:
-- CartView: CartView
-- CardView: CardView
-- Form: FormView
-- ProductsView: ProductsView
-- broker: EventEmmiter
+- `CartView: CartView`
+- `CardView: CardView`
+- `Form: FormView`
+- `ProductsView: ProductsView`
+- `OrderSuccessView: OrderSuccessView`
+- `broker: EventEmmiter`<br>
 Методы:
-- init():void
+- `init():void`
+
+
+# UML 
+(Получилось крайне запутанно) 
+![umlya](https://github.com/user-attachments/assets/f681fe92-61be-4cf6-93c6-126d7c52026c)
