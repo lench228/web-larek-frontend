@@ -1,13 +1,21 @@
 import { iProduct, iOrderData } from '../../types/data/data';
 import { IProductsModel } from '../../types/models/i-products-model';
 import { IFormModel } from '../../types/models/i-form-model';
+import { EventEmitter } from '../base/events';
 
 export class FormModel implements IFormModel {
 	private _orderData: iOrderData;
 	private _error: string;
+	private readonly _events: EventEmitter;
+
+	
+	get events(): EventEmitter{
+		return this._events
+	}
 
 	get orderData(): iOrderData {
 		return this._orderData;
+
 	}
 
 	get error(): string {

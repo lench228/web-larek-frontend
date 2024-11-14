@@ -1,10 +1,11 @@
 import { Modal } from '../../types/base/Modal';
 import { iComponent } from '../../types/base/iComponent';
 import { iOrderData } from '../../types/data/data';
+import { EventEmitter } from '../base/events';
 
-export class CartView<T> extends Modal implements iComponent<T> {
+export class CartView extends Modal implements iComponent {
 	private readonly _container: HTMLElement;
-	private readonly _model: T;
+	private readonly _events: EventEmitter;
 	private readonly _template: HTMLElement;
 	private readonly _element: HTMLElement;
 	private _trashButton: HTMLElement;
@@ -12,22 +13,22 @@ export class CartView<T> extends Modal implements iComponent<T> {
 
 	constructor(
 		container: HTMLElement,
-		model: T,
+		event: EventEmitter,
 		template: HTMLElement,
 		element: HTMLElement
 	) {
 		super();
 		this._template = template;
 		this._element = element;
-		this._model = model;
+		this._events = event;
 		this._container = container;
 	}
 
 	get element(): HTMLElement {
 		return this._element;
 	}
-	get model(): T {
-		return this._model;
+	get events(): EventEmitter {
+		return this._events;
 	}
 	get template(): HTMLElement {
 		return this._template;

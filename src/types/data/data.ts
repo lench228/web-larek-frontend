@@ -16,6 +16,13 @@ export interface iProduct {
 	price: number | undefined;
 }
 
+export interface iApiProducts {
+	total: number;
+	items: iProduct[];
+}
+
+export type iCatalogProduct = Omit<iProduct, 'description'>;
+
 export interface iCartProduct {
 	id: string;
 	price: number;

@@ -1,37 +1,45 @@
 import { iComponent } from '../../types/base/iComponent';
+import { EventEmitter } from '../base/events';
+import { Component } from '../base/component';
+import { iApiProducts, iCatalogProduct, iProduct } from '../../types/data/data';
+import { BASE_URI } from 'mini-css-extract-plugin/types/utils';
+import { API_URL, CDN_URL } from '../../utils/constants';
 
-export class ProductsView<T> implements iComponent<T> {
-	private readonly _container: HTMLElement;
-	private readonly _model: T;
+export class ProductsView extends Component<iApiProducts> {
+	private readonly _events: EventEmitter;
 	private readonly _template: HTMLElement;
-	private readonly _element: HTMLElement;
 
 	constructor(
 		container: HTMLElement,
-		model: T,
-		template: HTMLElement,
-		element: HTMLElement
+		events: EventEmitter,
+		template: HTMLElement
 	) {
+		super(container);
 		this._template = template;
-		this._element = element;
-		this._model = model;
-		this._container = container;
+		console.log(template);
+		this._events = events;
 	}
 
-	get element(): HTMLElement {
-		return this._element;
-	}
-	get model(): T {
-		return this._model;
-	}
-	get template(): HTMLElement {
-		return this._template;
-	}
-	get container(): HTMLElement {
-		return this._container;
-	}
+	set items(products: iProduct[]) {
+		console.log(products);
+		this.container.innerHTML = '';
 
-	render(data?: object): HTMLElement {
-		throw new Error('Method not implemented.');
+		products.forEach((product: iCatalogProduct) => {
+			const newItem = this._template.cloneNode(true) as HTMLElement;
+
+			this.setText(newItem.querySelector('.card__title'), product.title);
+			this.setImage(
+				newItem.querySelector('.card__image'),
+				CDN_URL + product.image
+			);
+			this.setText(newItem.querySelector('.card__category'), product.category);
+
+			this.setText(
+				newItem.querySelector('.card__price'),
+				product.price ? product.price + ' ' + 'синапсов' : 'Бесценно'
+			);
+
+			this.container.appendChild(newItem);
+		});
 	}
 }

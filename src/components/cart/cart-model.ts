@@ -1,9 +1,15 @@
 import { iCartProduct } from '../../types/data/data';
 import { iCartModel } from '../../types/models/i-cart-model';
+import { EventEmitter } from '../base/events';
 
 export class CartModel implements iCartModel {
 	_products: iCartProduct[];
+	_events: EventEmitter;
 	_total: number;
+
+	get events (): EventEmitter{
+		return this._events;
+	}
 
 	get products(): iCartProduct[] {
 		return this._products;

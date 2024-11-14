@@ -26,6 +26,7 @@ export class Api {
     }
 
     get(url: string) {
+        console.log(this.baseUrl + url);
         return fetch(this.baseUrl + url, {
             ...this.options,
             method: 'GET'

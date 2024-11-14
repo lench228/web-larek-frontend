@@ -1,6 +1,7 @@
 import { iOrderData } from '../data/data';
+import { iModel } from '../base/iModel';
 
-export interface IFormModel {
+export interface IFormModel extends iModel{
 	orderData: iOrderData;
 	error: string;
 

@@ -1,8 +1,9 @@
-export interface iComponent<T> {
+import { EventEmitter } from '../../components/base/events';
+
+export interface iComponent {
 	container: HTMLElement;
-	model: T;
+	events: EventEmitter;
 	template: HTMLElement;
-	element: HTMLElement;
 
 	render(data?: object): HTMLElement;
 }

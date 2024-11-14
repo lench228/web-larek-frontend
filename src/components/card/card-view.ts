@@ -1,12 +1,14 @@
 import { Modal } from '../../types/base/Modal';
 import { iComponent } from '../../types/base/iComponent';
 import { iProduct } from '../../types/data/data';
+import { EventEmitter } from '../base/events';
 
-export class CardView<T> extends Modal implements iComponent<T> {
+export class CardView extends Modal implements iComponent {
 	private _container: HTMLElement;
-	private _model: T;
+	private _events: EventEmitter;
 	private _template: HTMLElement;
 	private _element: HTMLElement;
+
 	private _buyButton: HTMLElement;
 	private _deleteButton: HTMLElement;
 
@@ -14,12 +16,13 @@ export class CardView<T> extends Modal implements iComponent<T> {
 		super();
 	}
 
+
 	get element(): HTMLElement {
 		return this._element;
 	}
 
-	get model(): T {
-		return this._model;
+	get events(): EventEmitter {
+		return this._events;
 	}
 
 	get template(): HTMLElement {
