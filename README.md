@@ -44,8 +44,24 @@ npm run build
 ```
 yarn build
 ```
+UPD 
+Забыл добавить абстрактный класс для работы с дом, без него очень неудобно. 
+## Component
+Абстрактный класс для работы с компонентами, забыл его добавить изначально, содержит методы для работы с dom, имплементирует интерфейс iComponent
+`toggleClass(element: HTMLElement, className: string, force?: boolean)` 
+`setText(element: HTMLElement, value: unknown) `
+`setDisabled(element: HTMLElement, state: boolean) `
+`protected setHidden(element: HTMLElement) `
+`protected setVisible(element: HTMLElement) `
+`protected setImage(element: HTMLImageElement, src: string, alt?: string)`
+Также зря в компоненты передавал модели, вместо этого передаю брокер событий и в модели, и в компоненты, чтобы вызывать сразу emit. 
+
+
+---
+
+
 # Базовые интерфейсы и классы 
-## `iComponent<T>`
+## `iComponent`
 Описывает слой View в архитектуре, отвечает за отрисовку компонентов 
 Свойства: 
 - `container: HTMLElement` -- Родитель в котором нужно отрисовывать
@@ -69,9 +85,7 @@ yarn build
 - `protected openModal = (): void` -- Открытие модалки 
 - `protected closeModal = (): void` -- Закрытие модалки
 
-
 ---
-
 ## Api 
 Класс для работы с API
 Свойства:
