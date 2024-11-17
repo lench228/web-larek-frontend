@@ -2,10 +2,31 @@ import { iComponent } from '../../types/base/iComponent';
 import { EventEmitter } from './events';
 
 export abstract class Component<T> implements iComponent {
-	events: EventEmitter;
-	template: HTMLElement;
+	protected _template: HTMLElement;
+	protected _container: HTMLElement;
+	protected _events: EventEmitter;
 
-	protected constructor(public container: HTMLElement) {}
+	protected constructor(
+		container: HTMLElement,
+		events: EventEmitter,
+		template: HTMLElement
+	) {
+		this._template = template;
+		this._events = events;
+		this._container = container;
+	}
+
+	get template(): HTMLElement {
+		return this._template;
+	}
+
+	get container(): HTMLElement {
+		return this._container;
+	}
+
+	get events(): EventEmitter {
+		return this._events;
+	}
 
 	toggleClass(element: HTMLElement, className: string, force?: boolean) {
 		element.classList.toggle(className, force);

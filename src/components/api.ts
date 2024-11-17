@@ -1,4 +1,4 @@
 import { Api } from './base/api';
+import { API_URL, settings } from '../utils/constants';
 
-console.log(process.env.API_ORIGIN);
-export const ApiAuc = new Api(process.env.API_ORIGIN + '/api/weblarek/');
+export const LarekApi = new Api(API_URL, settings);

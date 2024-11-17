@@ -1,13 +1,9 @@
 import { iComponent } from '../../types/base/iComponent';
-import { Modal } from '../../types/base/Modal';
+import { Modal } from '../base/Modal';
 import { EventEmitter } from '../base/events';
+import { iOrderData, iProduct } from '../../types/data/data';
 
-export class FormView extends Modal implements iComponent {
-	private readonly _container: HTMLElement;
-	private readonly _events: EventEmitter;
-	private readonly _template: HTMLElement;
-	private readonly _element: HTMLElement;
-
+export class FormView extends Modal<iOrderData> {
 	private formElements: HTMLElement[];
 	private submitButton: HTMLElement;
 	private nextButton: HTMLElement;
@@ -15,27 +11,9 @@ export class FormView extends Modal implements iComponent {
 	constructor(
 		container: HTMLElement,
 		events: EventEmitter,
-		template: HTMLElement,
-		element: HTMLElement
+		template: HTMLElement
 	) {
-		super();
-		this._template = template;
-		this._element = element;
-		this._events = events;
-		this._container = container;
-	}
-
-	get element(): HTMLElement {
-		return this._element;
-	}
-	get events(): EventEmitter {
-		return this._events;
-	}
-	get template(): HTMLElement {
-		return this._template;
-	}
-	get container(): HTMLElement {
-		return this._container;
+		super(container, events, template);
 	}
 
 	render(data?: object): HTMLElement {

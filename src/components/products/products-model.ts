@@ -2,7 +2,7 @@ import { iProduct } from '../../types/data/data';
 import { IProductsModel } from '../../types/models/i-products-model';
 import { EventEmitter } from '../base/events';
 import { Api } from '../base/api';
-import { ApiAuc } from '../api';
+import { LarekApi } from '../api';
 
 export class ProductsModel implements IProductsModel {
 	private _products: iProduct[];
@@ -13,7 +13,7 @@ export class ProductsModel implements IProductsModel {
 
 	private async initializeProducts() {
 		try {
-			this._products = await this.getItems('product/');
+			this._products = await this.getItems('/product/');
 			this._events.emit('products:get', this._products);
 		} catch (e) {
 			console.error('Error fetching products:', e);
@@ -30,7 +30,7 @@ export class ProductsModel implements IProductsModel {
 
 	public getItems = async (url: string): Promise<iProduct[]> => {
 		try {
-			const result = await ApiAuc.get(url);
+			const result = await LarekApi.get(url);
 			return result as iProduct[];
 		} catch (e) {
 			console.error('Error fetching items from API:', e);

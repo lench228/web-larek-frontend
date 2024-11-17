@@ -1,13 +1,13 @@
 import { iProduct } from '../../types/data/data';
 import { iCardModel } from '../../types/models/i-card-model';
 import { EventEmitter } from '../base/events';
+import { LarekApi } from '../api';
 
 export class CardModel implements iCardModel {
 	private _product: iProduct;
 	private readonly _events: EventEmitter;
 
-	constructor(product: iProduct, events: EventEmitter) {
-		this._product = product;
+	constructor(events: EventEmitter) {
 		this._events = events;
 	}
 
@@ -15,20 +15,12 @@ export class CardModel implements iCardModel {
 		return this._product;
 	}
 
-	get events () : EventEmitter {
+	get events(): EventEmitter {
 		return this._events;
 	}
 
-	getCard(url: string): Promise<object> {
-		this._product = {
-			id: '',
-			category: '',
-			description: '',
-			image: '',
-			price: 1,
-			title: 'a',
-		};
-		throw new Error('Method not implemented');
+	async getCard(id: string): Promise<object> {
+		return LarekApi.get('/product' + '/' + id);
 	}
 	buyProduct(): void {
 		throw new Error('Method not implemented.');
