@@ -2,10 +2,18 @@ import { ProductsView } from './products/products-view';
 import { ProductsModel } from './products/products-model';
 import { EventEmitter } from './base/events';
 import { cloneTemplate } from '../utils/utils';
-import { iApiProducts, iCatalogProduct, iProduct } from '../types/data/data';
+import {
+	iApiProducts,
+	iCartProduct,
+	iCatalogProduct,
+	iProduct,
+} from '../types/data/data';
 import { CardView } from './card/card-view';
 import { CartModel } from './cart/cart-model';
 import { CardModel } from './card/card-model';
+import { CartView } from './cart/cart-view';
+
+const modalContainer = document.querySelector('.modal') as HTMLElement;
 
 const CatalogSelectors = {
 	container: document.querySelector('.gallery') as HTMLElement,
@@ -13,14 +21,18 @@ const CatalogSelectors = {
 };
 
 const CardSelectors = {
-	container: document.querySelector('.modal') as HTMLElement,
 	template: cloneTemplate('#card-preview') as HTMLElement,
+};
+
+const CartSelectors = {
+	template: cloneTemplate('#basket') as HTMLElement,
 };
 
 export class Page {
 	private broker = new EventEmitter();
 
 	constructor() {
+		// Объявить в index.js?
 		const productsModel = new ProductsModel(this.broker);
 		const productsComponent = new ProductsView(
 			CatalogSelectors.container,
@@ -29,12 +41,22 @@ export class Page {
 		);
 
 		const cardModel = new CardModel(this.broker);
+
 		const cardComponent = new CardView(
-			CardSelectors.container,
+			modalContainer,
 			this.broker,
 			CardSelectors.template
 		);
 
+		const cartModel = new CartModel(this.broker);
+
+		const cartComponent = new CartView(
+			modalContainer,
+			this.broker,
+			CartSelectors.template
+		);
+
+		// Вынести в метод
 		this.broker.on('products:get', () => {
 			productsComponent.render(productsModel.products as Partial<iApiProducts>);
 		});
@@ -50,6 +72,11 @@ export class Page {
 				.finally(() => {
 					cardComponent.stopLoading();
 				});
+		});
+
+		this.broker.on('cart:open', () => {
+			cartComponent.render(cartModel._products as Partial<iCartProduct>);
+			cartComponent.openModal();
 		});
 	}
 }

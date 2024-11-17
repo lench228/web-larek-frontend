@@ -4,10 +4,14 @@ import { EventEmitter } from '../base/events';
 
 export class CartModel implements iCartModel {
 	_products: iCartProduct[];
-	_events: EventEmitter;
 	_total: number;
+	_events: EventEmitter;
 
-	get events (): EventEmitter{
+	constructor(events: EventEmitter) {
+		this._events = events;
+	}
+
+	get events(): EventEmitter {
 		return this._events;
 	}
 

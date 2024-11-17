@@ -7,8 +7,9 @@ import { CDN_URL } from '../../utils/constants';
 import { createElement } from '../../utils/utils';
 
 export class CardView extends Modal<iProduct> {
-	private _buyButton: HTMLElement;
-	private _deleteButton: HTMLElement;
+	private readonly _button: HTMLElement;
+	private _id: string;
+
 	constructor(
 		container: HTMLElement,
 		event: EventEmitter,
@@ -16,8 +17,10 @@ export class CardView extends Modal<iProduct> {
 	) {
 		super(container, event, template);
 		this._container = container.querySelector('.modal__content');
-
 		this._container.appendChild(this.template);
+
+		this._button = this._container.querySelector('.card__button');
+		this._button.addEventListener('click', this.handleBuyButtonClick);
 	}
 
 	renderLoading() {
@@ -41,19 +44,58 @@ export class CardView extends Modal<iProduct> {
 	}
 
 	set price(price: string) {
-		this.setText(
-			this._container.querySelector('.card__price'),
-			price + ' ' + 'синапсов'
-		);
+		const priceEl = this._container.querySelector(
+			'.card__price'
+		) as HTMLElement;
+		console.log(price);
+		if (price) {
+			this.setText(priceEl, price + ' ' + 'синапсов');
+			this.setDisabled(this._button, false);
+		} else {
+			this.setText(priceEl, 'Бесценно');
+			this.setDisabled(this._button, true);
+		}
 	}
 
 	set image(url: string) {
 		this.setImage(this._container.querySelector('.card__image'), CDN_URL + url);
 	}
-	private handleBuyButtonClick(event: MouseEvent): void {
-		throw new Error('Method not implemented.');
+
+	set id(id: string) {
+		this._id = id;
 	}
-	private handelDeleteButtonClick(event: MouseEvent): void {
-		throw new Error('Method not implemented.');
+
+	get id(): string {
+		return this._id;
 	}
+	// Добавить enum
+	private handleBuyButtonClick = (): void => {
+		this.toggleButton(
+			this.handleBuyButtonClick,
+			this.handleDeleteButtonClick,
+			'Убрать из корзины',
+			'add'
+		);
+	};
+
+	private handleDeleteButtonClick = (): void => {
+		this.toggleButton(
+			this.handleDeleteButtonClick,
+			this.handleBuyButtonClick,
+			'В корзину',
+			'remove'
+		);
+	};
+
+	private toggleButton = (
+		removeCb: () => void,
+		addCb: () => void,
+		text: string,
+		eventName: string
+	): void => {
+		this._button.removeEventListener('click', removeCb);
+		this._button.addEventListener('click', addCb);
+		this._button.textContent = text;
+		this._events.emit('cart:' + eventName, { id: this.id });
+	};
 }
