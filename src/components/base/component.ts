@@ -63,7 +63,6 @@ export abstract class Component<T> implements iComponent {
 	}
 
 	render(data?: Partial<T>): HTMLElement {
-		console.log(data);
 		Object.assign(this as object, data ?? {});
 		return this.container;
 	}

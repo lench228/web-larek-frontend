@@ -5,6 +5,6 @@ export interface iCartModel extends iModel {
 	products: iCartProduct[];
 	total: number;
 
-	add(id: string): void;
+	add(card: iCartProduct): void;
 	remove(id: string): void;
 }

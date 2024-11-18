@@ -50,6 +50,8 @@ export abstract class Modal<T> extends Component<T> {
 				this.handleCloseButtonClick
 			);
 		}
+
+		this._container.innerHTML = '';
 	};
 
 	openModal = (): void => {

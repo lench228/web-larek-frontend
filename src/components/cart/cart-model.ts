@@ -1,4 +1,4 @@
-import { iCartProduct } from '../../types/data/data';
+import { iCartProduct, iProduct } from '../../types/data/data';
 import { iCartModel } from '../../types/models/i-cart-model';
 import { EventEmitter } from '../base/events';
 
@@ -9,6 +9,8 @@ export class CartModel implements iCartModel {
 
 	constructor(events: EventEmitter) {
 		this._events = events;
+		this._products = [];
+		this._total = 0;
 	}
 
 	get events(): EventEmitter {
@@ -23,10 +25,18 @@ export class CartModel implements iCartModel {
 		return this._total;
 	}
 
-	add(id: string): void {
-		throw new Error('Method not implemented.');
+	add(card: iCartProduct): void {
+		this._products.push(card);
+		this._total += card.price;
 	}
-	remove(id: string): void {
-		throw new Error('Method not implemented.');
+
+	remove(idToRemove: string): void {
+		this._total -= this.products.find(
+			(card: iCartProduct) => card.id === idToRemove
+		).price;
+
+		this._products = this._products.filter(
+			(card: iCartProduct) => card.id !== idToRemove
+		);
 	}
 }

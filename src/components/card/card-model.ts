@@ -19,6 +19,7 @@ export class CardModel implements iCardModel {
 		return this._events;
 	}
 
+	// Вынести в апи
 	async getCard(id: string): Promise<object> {
 		return LarekApi.get('/product' + '/' + id);
 	}
