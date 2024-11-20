@@ -64,6 +64,11 @@ export class CartView extends Modal<iCartProduct> {
 			this._container.querySelector(CartViewSelectors.totalPrice),
 			total + ' ' + 'синапсов'
 		);
+		if (count === 0) {
+			this.setDisabled(this._orderButton, true);
+		} else {
+			this.setDisabled(this._orderButton, false);
+		}
 	}
 
 	#renderCart(products: iCartProduct[]) {
@@ -122,7 +127,8 @@ export class CartView extends Modal<iCartProduct> {
 		this._events.emit('cart:remove', { id: targetId });
 	};
 
-	#handleOrderButtonClick(): void {
-		throw new Error('Method not implemented.');
-	}
+	#handleOrderButtonClick = (): void => {
+		this.closeModal();
+		this._events.emit('order:create');
+	};
 }

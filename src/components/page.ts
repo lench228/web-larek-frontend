@@ -6,13 +6,18 @@ import {
 	iApiProducts,
 	iCartProduct,
 	iCatalogProduct,
+	iOrderData,
 	iProduct,
+	iResultOrder,
 } from '../types/data/data';
 import { CardView } from './card/card-view';
 import { CartModel } from './cart/cart-model';
 import { CardModel } from './card/card-model';
 import { CartView } from './cart/cart-view';
-import { render } from 'sass';
+import { FormView } from './form/form-view';
+import { FormModel } from './form/form-model';
+import { FormFieldTypes } from '../types/models/i-form-model';
+import { ResultView } from './result/resultView';
 
 const modalContainer = document.querySelector('.modal') as HTMLElement;
 
@@ -29,6 +34,15 @@ const CartSelectors = {
 	template: cloneTemplate('#basket') as HTMLElement,
 };
 
+const FormSelectors = {
+	orderTemplate: cloneTemplate('#order') as HTMLElement,
+	contactTemplate: cloneTemplate('#contacts') as HTMLElement,
+	buttonNext: '.order__button',
+	buttonSubmit: '.button',
+};
+
+const successTemplate = cloneTemplate('#success') as HTMLElement;
+
 export class Page {
 	private broker = new EventEmitter();
 	private productsModel: ProductsModel;
@@ -37,6 +51,9 @@ export class Page {
 	private cartView: CartView;
 	private cardModel: CardModel | null = null;
 	private cardView: CardView | null = null;
+	private formView: FormView | null = null;
+	private successView: ResultView | null = null;
+	private formModel: FormModel;
 
 	constructor() {
 		this.productsModel = new ProductsModel(this.broker);
@@ -52,7 +69,20 @@ export class Page {
 			this.broker,
 			CartSelectors.template
 		);
+		this.formModel = new FormModel(this.broker);
 
+		this.formView = new FormView(
+			modalContainer,
+			this.broker,
+			FormSelectors.orderTemplate,
+			FormSelectors.orderTemplate.querySelector(FormSelectors.buttonNext)
+		);
+
+		this.successView = new ResultView(
+			modalContainer,
+			this.broker,
+			successTemplate
+		);
 		this.setupEventHandlers();
 	}
 
@@ -125,13 +155,61 @@ export class Page {
 		this.broker.on('cart:remove', (id: Record<string, string>) => {
 			this.cartModel.remove(id.id);
 			if (!this.cartView.container.querySelector('.card_full')) {
-				console.log(this.cartView.container.innerHTML);
 				this.cartView.removeCard(id.id);
 			}
 			this.cartView.update(
 				this.cartModel.products.length,
 				this.cartModel.total
 			);
+		});
+
+		this.broker.on('order:create', () => {
+			this.formView.renderForm();
+
+			this.formModel.orderData.items = this.cartModel.products.map(
+				(product) => product.id
+			);
+			this.formModel.orderData.total = this.cartModel._total;
+		});
+
+		this.broker.on(
+			'form:input',
+			(data: { value: string; name: FormFieldTypes }) => {
+				console.log(data);
+				const errors = this.formModel.validate(data.value, data.name);
+				if (errors.length) {
+					this.formView.render({ errors: errors, isSubmit: false });
+				}
+				if (this.formModel.isReady()) {
+					this.formView.render({ errors: errors, isSubmit: true });
+				}
+			}
+		);
+
+		this.broker.on('order:submit', () => {
+			if (this.formModel.currentForm !== 'contact') {
+				this.formView.changeForm(
+					FormSelectors.contactTemplate,
+					FormSelectors.contactTemplate.querySelector(
+						FormSelectors.buttonSubmit
+					)
+				);
+				this.formView.renderForm();
+				this.formModel.updateForm('contact');
+			} else {
+				this.formModel.postOrder().then((res: iResultOrder) => {
+					this.cartModel.clear();
+					this.formModel.clear();
+					this.cartView.update(0, 0);
+					this.formView.resetForm(
+						FormSelectors.orderTemplate,
+						FormSelectors.orderTemplate.querySelector(FormSelectors.buttonNext)
+					);
+
+					this.successView.render(res);
+					this.formModel.updateForm('order');
+				});
+			}
 		});
 	}
 }

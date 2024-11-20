@@ -1,11 +1,13 @@
 import { iOrderData } from '../data/data';
 import { iModel } from '../base/iModel';
 
-export interface IFormModel extends iModel{
+export type FormFieldTypes = 'phone' | 'email' | 'address' | 'payment';
+
+export interface IFormModel extends iModel {
 	orderData: iOrderData;
-	error: string;
+	errors: string[];
 
 	input(value: string): void;
-	validate(value: string): string | undefined;
+	validate(value: string, type: FormFieldTypes): string[];
 	postOrder(formFields: iOrderData): Promise<object>;
 }

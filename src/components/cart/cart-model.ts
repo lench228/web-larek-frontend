@@ -25,6 +25,11 @@ export class CartModel implements iCartModel {
 		return this._total;
 	}
 
+	clear() {
+		this._products = [];
+		this._total = 0;
+	}
+
 	add(card: iCartProduct): void {
 		this._products.push(card);
 		this._total += card.price;

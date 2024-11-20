@@ -1,6 +1,6 @@
 export interface iOrderData {
 	payment: string;
-	mail: string;
+	email: string;
 	phone: string;
 	address: string;
 	total: number;
@@ -27,4 +27,14 @@ export interface iCartProduct {
 	id: string;
 	price: number;
 	title: string;
+}
+
+export interface iFormView {
+	errors: string[];
+	isSubmit: boolean;
+}
+
+export interface iResultOrder {
+	id: string;
+	total: number;
 }

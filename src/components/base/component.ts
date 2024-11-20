@@ -31,7 +31,6 @@ export abstract class Component<T> implements iComponent {
 	toggleClass(element: HTMLElement, className: string, force?: boolean) {
 		element.classList.toggle(className, force);
 	}
-
 	protected setText(element: HTMLElement, value: unknown) {
 		if (element) {
 			element.textContent = String(value);
